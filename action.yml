@@ -12,6 +12,10 @@ inputs:
     description: 'Which environment to use'
     required: false
     default: 'test'
+  author:
+    description: 'The author of the commit'
+    required: false
+    default: ${{ github.actor }}
 
 jobs:
   checkout_and_format:
@@ -37,5 +41,5 @@ jobs:
           MIX_ENV: ${{ inputs.mix_env }}
       - uses: actions4git/add-commit-push@v1
         with:
-          commit-author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          commit-author: ${{ inputs.author }} <${{ inputs.author }}@users.noreply.github.com>
           commit-message: "Format code"

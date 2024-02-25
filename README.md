@@ -6,6 +6,7 @@ A Github Action to format your Elixir code and commit any changed files to the p
 `elixir_version` - required. Example: "1.15"
 `otp_version` - required. Example: "26"
 `mix_env` - optional. Defaults to "test".
+`author` - optional. Defaults to github.actor
 
 ## Example Usage:
 ```

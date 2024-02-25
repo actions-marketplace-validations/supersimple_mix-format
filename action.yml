@@ -16,7 +16,9 @@ inputs:
     description: 'The author of the commit'
     required: false
     default: ${{ github.actor }}
-
+branding:
+  icon: 'align-center'
+  color: 'purple'
 runs:
   using: 'composite'
   steps:

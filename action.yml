@@ -17,8 +17,11 @@ inputs:
     required: false
     default: ${{ github.actor }}
 
-runs:
-    using: "composite"
+jobs:
+  checkout_and_format:
+    name: Checkout and format the code
+    permissions:
+        contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,12 +33,10 @@ runs:
           elixir-version: ${{ inputs.elixir_version }}
       - name: Compile project
         run: mix compile
-        shell: bash
         env: 
           MIX_ENV: ${{ inputs.mix_env }}
       - name: Run formatter
         run: mix format
-        shell: bash
         env: 
           MIX_ENV: ${{ inputs.mix_env }}
       - uses: actions4git/add-commit-push@v1

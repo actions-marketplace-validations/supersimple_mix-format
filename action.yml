@@ -17,9 +17,7 @@ inputs:
     required: false
     default: ${{ github.actor }}
 
-jobs:
-  checkout_and_format:
-    name: Checkout and format the code
+runs:
     permissions:
         contents: write
     using: "composite"

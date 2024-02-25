@@ -30,10 +30,12 @@ runs:
         elixir-version: ${{ inputs.elixir_version }}
     - name: Compile project
       run: mix compile
+      shell: bash
       env: 
         MIX_ENV: ${{ inputs.mix_env }}
     - name: Run formatter
       run: mix format
+      shell: bash
       env: 
         MIX_ENV: ${{ inputs.mix_env }}
     - uses: actions4git/add-commit-push@v1

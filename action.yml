@@ -17,29 +17,26 @@ inputs:
     required: false
     default: ${{ github.actor }}
 
-jobs:
-  checkout_and_format:
-    name: Checkout and format the code
-    permissions:
-        contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-      - uses: erlef/setup-beam@v1
-        with:
-          otp-version: ${{ inputs.otp_version }}
-          elixir-version: ${{ inputs.elixir_version }}
-      - name: Compile project
-        run: mix compile
-        env: 
-          MIX_ENV: ${{ inputs.mix_env }}
-      - name: Run formatter
-        run: mix format
-        env: 
-          MIX_ENV: ${{ inputs.mix_env }}
-      - uses: actions4git/add-commit-push@v1
-        with:
-          commit-author: ${{ inputs.author }} <${{ inputs.author }}@users.noreply.github.com>
-          commit-message: "Format code"
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
+    - uses: erlef/setup-beam@v1
+      with:
+        otp-version: ${{ inputs.otp_version }}
+        elixir-version: ${{ inputs.elixir_version }}
+    - name: Compile project
+      run: mix compile
+      env: 
+        MIX_ENV: ${{ inputs.mix_env }}
+    - name: Run formatter
+      run: mix format
+      env: 
+        MIX_ENV: ${{ inputs.mix_env }}
+    - uses: actions4git/add-commit-push@v1
+      with:
+        commit-author: ${{ inputs.author }} <${{ inputs.author }}@users.noreply.github.com>
+        commit-message: "Format code"

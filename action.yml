@@ -25,16 +25,16 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{ env.otp }}
-          elixir-version: ${{ env.elixir }}
+          otp-version: ${{ inputs.otp_version }}
+          elixir-version: ${{ inputs.elixir_version }}
       - name: Compile project
         run: mix compile
         env: 
-          MIX_ENV: ${{ env.mix_env }}
+          MIX_ENV: ${{ inputs.mix_env }}
       - name: Run formatter
         run: mix format
         env: 
-          MIX_ENV: ${{ env.mix_env }}
+          MIX_ENV: ${{ inputs.mix_env }}
       - uses: actions4git/add-commit-push@v1
         with:
           commit-author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>

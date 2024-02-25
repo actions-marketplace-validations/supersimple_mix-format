@@ -1,0 +1,41 @@
+name: 'Mix Format'
+description: 'Setup Elixir, compile and format the code. Then push any changes back to the PR.'
+
+inputs:
+  elixir_version:
+    description: 'Which version of Elixir to use'
+    required: true
+  otp_version:
+    description: 'Which version of OTP to use'
+    required: true
+  mix_env:
+    description: 'Which environment to use'
+    required: false
+    default: 'test'
+
+jobs:
+  checkout_and_format:
+    name: Checkout and format the code
+    permissions:
+        contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.otp }}
+          elixir-version: ${{ env.elixir }}
+      - name: Compile project
+        run: mix compile
+        env: 
+          MIX_ENV: ${{ env.mix_env }}
+      - name: Run formatter
+        run: mix format
+        env: 
+          MIX_ENV: ${{ env.mix_env }}
+      - uses: actions4git/add-commit-push@v1
+        with:
+          commit-author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          commit-message: "Format code"
